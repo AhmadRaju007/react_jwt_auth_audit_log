@@ -24,7 +24,7 @@ const App = () => {
                 <>
                 <LogoutButton/>
                 <Routes>
-                  <Route exact path="/" element={<Home/>}/>
+                  <Route exact path="/" element={<CreateSite/>}/>
                   <Route exact path="/site-create" element={<CreateSite/>}/>
                   <Route exact path="/site/:id" element={<UpdateSite/>}/>
                 </Routes>

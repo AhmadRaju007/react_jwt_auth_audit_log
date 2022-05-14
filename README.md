@@ -15,4 +15,4 @@ When all these are done run following to start your server in port 3000:
 
 `npm start`
 
-If you face any problem feel free to contact me: rajuahmad6789@gmail.com
+If you face any problem feel free to contact me: rajuahmad6789@gmail.com.
