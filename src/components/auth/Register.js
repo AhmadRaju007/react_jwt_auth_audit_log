@@ -8,18 +8,18 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from "axios";
+import {toast} from "react-toastify";
 
 const theme = createTheme();
 
-const Login = () => {
+const Register = () => {
 	const navigate = useNavigate();
-	
 	const handleSubmit = (event) => {
 		event.preventDefault();
 		const data = new FormData(event.currentTarget);
 		axios({
 			method:"post",
-			url:process.env.REACT_APP_SERVER_URL+'auth/login',
+			url:process.env.REACT_APP_SERVER_URL+'auth/register',
 			data: {
 				username: data.get('username'),
 				password: data.get('password')
@@ -30,11 +30,15 @@ const Login = () => {
 			}
 		})
 		.then(function (response) {
-			sessionStorage.setItem("authToken", response.data.token);
-			window.location.reload();
+			navigate("../");
+			toast.dark(response.data.message, {
+				toastId: "register_success"
+			});
 		})
 		.catch(function (error) {
-			console.log(error);
+			toast.dark(error.response.data.message, {
+				toastId: "register_success"
+			});
 		});
 	};
 	
@@ -51,7 +55,7 @@ const Login = () => {
 					}}
 				>
 					<Typography component="h1" variant="h5">
-						Sign in
+						Register
 					</Typography>
 					<Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
 						<TextField
@@ -80,10 +84,10 @@ const Login = () => {
 							variant="contained"
 							sx={{ mt: 3, mb: 2 }}
 						>
-							Sign In
+							Sign Up
 						</Button>
-						<Link to="/register">
-							{"Don't have an account? Sign Up"}
+						<Link to="/">
+							{"Already have an account? Sign In"}
 						</Link>
 					</Box>
 				</Box>
@@ -92,4 +96,4 @@ const Login = () => {
 	);
 }
 
-export default Login;
+export default Register;

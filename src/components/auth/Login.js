@@ -1,16 +1,14 @@
 import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
+import {Link} from "react-router-dom";
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import axios from "axios";
+import {toast} from "react-toastify";
 
 const theme = createTheme();
 
@@ -18,9 +16,24 @@ const Login = () => {
 	const handleSubmit = (event) => {
 		event.preventDefault();
 		const data = new FormData(event.currentTarget);
-		console.log({
-			email: data.get('email'),
-			password: data.get('password'),
+		axios({
+			method:"post",
+			url:process.env.REACT_APP_SERVER_URL+'auth/login',
+			data: {
+				username: data.get('username'),
+				password: data.get('password')
+			},
+			headers:{
+				'Content-Type':'application/json',
+				dataType: 'json'
+			}
+		})
+		.then(function (response) {
+			sessionStorage.setItem("authToken", response.data.token);
+			window.location.reload();
+		})
+		.catch(function (error) {
+			console.log(error);
 		});
 	};
 	
@@ -44,10 +57,10 @@ const Login = () => {
 							margin="normal"
 							required
 							fullWidth
-							id="email"
-							label="Email Address"
-							name="email"
-							autoComplete="email"
+							id="username"
+							label="Username"
+							name="username"
+							autoComplete="username"
 							autoFocus
 						/>
 						<TextField
@@ -60,10 +73,6 @@ const Login = () => {
 							id="password"
 							autoComplete="current-password"
 						/>
-						<FormControlLabel
-							control={<Checkbox value="remember" color="primary" />}
-							label="Remember me"
-						/>
 						<Button
 							type="submit"
 							fullWidth
@@ -72,18 +81,9 @@ const Login = () => {
 						>
 							Sign In
 						</Button>
-						<Grid container>
-							<Grid item xs>
-								<Link href="#" variant="body2">
-									Forgot password?
-								</Link>
-							</Grid>
-							<Grid item>
-								<Link href="#" variant="body2">
-									{"Don't have an account? Sign Up"}
-								</Link>
-							</Grid>
-						</Grid>
+						<Link to="/register">
+							{"Don't have an account? Sign Up"}
+						</Link>
 					</Box>
 				</Box>
 			</Container>
