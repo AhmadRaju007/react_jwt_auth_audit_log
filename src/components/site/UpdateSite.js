@@ -79,10 +79,10 @@ const UpdateSite = () =>{
 			.required("Please provide valid longitude"),
 	});
 	
-	const submitForm = async (data) => {
+	const submitForm = async (data) => {;
 		axios({
 			method:"post",
-			url:process.env.REACT_APP_SERVER_URL+'site/',
+			url:process.env.REACT_APP_SERVER_URL+`site/update/${id}`,
 			data: {
 				name: data.name,
 				jurisdiction: data.jurisdiction,
@@ -97,11 +97,9 @@ const UpdateSite = () =>{
 			}
 		})
 			.then(function (response) {
-				// console.log(response.data);
 				toast.dark(response.data.message, {
 					toastId: "site_create_success"
 				});
-				// window.location.reload();
 			})
 			.catch(function (error) {
 				console.log(error);
@@ -111,7 +109,7 @@ const UpdateSite = () =>{
 	return (
 		<ThemeProvider theme={theme}>
 			<CssBaseline />
-			<Formik initialValues={initialValues} validationSchema={validation} onSubmit={submitForm}>
+			<Formik initialValues={initialValues} validationSchema={validation} onSubmit={submitForm} enableReinitialize={true}>
 				{({
 					  values,
 					  errors,
@@ -157,7 +155,7 @@ const UpdateSite = () =>{
 													fullWidth
 													autoComplete="name"
 													variant="outlined"
-													value={values.name ? values.name: initialValues.name}
+													value={values.name}
 													onChange={event => {handleChange(event);}}
 													error={!!(touched.name && errors.name)}
 													helperText={touched.name && errors.name}
@@ -172,7 +170,7 @@ const UpdateSite = () =>{
 													label="Jurisdiction/City/Region"
 													fullWidth
 													autoComplete="jurisdiction"
-													value={values.jurisdiction ? values.jurisdiction : initialValues.jurisdiction}
+													value={values.jurisdiction}
 													onChange={event => {handleChange(event);}}
 													error={!!(touched.jurisdiction && errors.jurisdiction)}
 													helperText={touched.jurisdiction && errors.jurisdiction}
@@ -188,7 +186,7 @@ const UpdateSite = () =>{
 													fullWidth
 													autoComplete="description"
 													variant="outlined"
-													value={values.description ? values.description: initialValues.description}
+													value={values.description}
 													onChange={event => {handleChange(event);}}
 													error={!!(touched.description && errors.description)}
 													helperText={touched.description && errors.description}
@@ -202,7 +200,7 @@ const UpdateSite = () =>{
 													fullWidth
 													autoComplete="latitude"
 													variant="outlined"
-													value={values.latitude ? values.latitude: initialValues.latitude}
+													value={values.latitude}
 													onChange={event => {handleChange(event);}}
 													error={!!(touched.latitude && errors.latitude)}
 													helperText={touched.latitude && errors.latitude}
@@ -216,7 +214,7 @@ const UpdateSite = () =>{
 													fullWidth
 													autoComplete="longitude"
 													variant="outlined"
-													value={values.longitude ? values.longitude: initialValues.longitude}
+													value={values.longitude}
 													onChange={event => {handleChange(event);}}
 													error={!!(touched.longitude && errors.longitude)}
 													helperText={touched.longitude && errors.longitude}
@@ -246,7 +244,9 @@ const UpdateSite = () =>{
 											{
 												logs?.map(log=>(
 													<Grid item container xs={12} key={log.id}>
-														<Typography sx={{py: 1}} fontSize={"14px"}>{log.operation==="CREATE"? "Created by ": "Updated by "}{log.username + " on " + unixTime(log.created_at)}</Typography>
+														<Typography sx={{py: 1}} fontSize={"14px"}>
+															{log.operation==="CREATE"? "Created by ": "Updated by "}{log.username + " on " + unixTime(log.created_at)}
+														</Typography>
 													</Grid>
 												)
 											)}
