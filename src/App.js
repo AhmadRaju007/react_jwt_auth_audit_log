@@ -1,13 +1,11 @@
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import './App.css';
-import Home from "./components/home/Home";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import CreateSite from "./components/site/CreateSite";
 import UpdateSite from "./components/site/UpdateSite";
-import Button from "@mui/material/Button";
 import LogoutButton from "./components/layout/LogoutButton";
 
 const App = () => {

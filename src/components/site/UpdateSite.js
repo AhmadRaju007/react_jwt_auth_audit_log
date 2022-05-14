@@ -5,8 +5,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import * as Yup from 'yup';
 import {useEffect, useState} from "react";
 import axios from "axios";
-import {Checkbox, FormControlLabel, Grid, Paper, TextField} from "@mui/material";
-import { makeStyles } from "@mui/styles";
+import {Grid, Paper, TextField} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import SaveIcon from '@mui/icons-material/Save';
@@ -23,7 +22,6 @@ const theme = createTheme();
 const UpdateSite = () =>{
 	const token = sessionStorage.getItem("authToken");
 	const {id}= useParams();
-	// const [siteData, setSiteData] = useState([])
 	const initVal = {
 		name: "",
 		jurisdiction: "",
