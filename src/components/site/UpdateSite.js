@@ -16,6 +16,7 @@ import {Formik} from 'formik';
 import {toast} from "react-toastify";
 import {useParams} from "react-router-dom";
 import {unixTime} from "../../utils";
+import LogModule from "./LogModule";
 
 const theme = createTheme();
 
@@ -31,6 +32,7 @@ const UpdateSite = () =>{
 	}
 	const [initialValues, setInitialValues] = useState(initVal);
 	const [logs, setLogs] = useState(null);
+	const [refresh, setRefresh] = useState(false);
 	
 	async function fetchSiteData() {
 		try {
@@ -63,7 +65,7 @@ const UpdateSite = () =>{
 	
 	useEffect(()=>{
 		fetchSiteData();
-	}, [id])
+	}, [id, refresh]);
 	
 	const validation = Yup.object({
 		name: Yup.string()
@@ -77,7 +79,7 @@ const UpdateSite = () =>{
 			.required("Please provide valid longitude"),
 	});
 	
-	const submitForm = async (data) => {;
+	const submitForm = async (data) => {
 		axios({
 			method:"post",
 			url:process.env.REACT_APP_SERVER_URL+`site/update/${id}`,
@@ -98,6 +100,7 @@ const UpdateSite = () =>{
 				toast.dark(response.data.message, {
 					toastId: "site_create_success"
 				});
+				setRefresh(!refresh);
 			})
 			.catch(function (error) {
 				console.log(error);
@@ -220,36 +223,7 @@ const UpdateSite = () =>{
 											</Grid>
 										</Grid>
 									</Box>
-									{logs ?
-										<Box
-											sx={{
-												px: 2,
-												py: 1,
-												mt: 2,
-												borderRadius: 1,
-												backgroundColor: "#eeeeee",
-												opacity: [0.3, 0.5, 0.8],
-												'&:hover': {
-													backgroundColor: '#bdbdbd',
-													opacity: [0.9, 0.8, 1],
-												},
-											}}
-										>
-											<Grid item container xs={6}>
-												<Typography sx={{py: 1}} fontSize={"14px"}>Audit Log</Typography>
-											</Grid>
-											<Divider sx={{color: "#212121"}} variant={"fullWidth"}/>
-											{
-												logs?.map(log=>(
-													<Grid item container xs={12} key={log.id}>
-														<Typography sx={{py: 1}} fontSize={"14px"}>
-															{log.operation==="CREATE"? "Created by ": "Updated by "}{log.username + " on " + unixTime(log.created_at)}
-														</Typography>
-													</Grid>
-												)
-											)}
-										</Box>:<></>
-									}
+									<LogModule logs={logs} refreshState={refresh} />
 								</Paper>
 							</Container>
 						</form>
