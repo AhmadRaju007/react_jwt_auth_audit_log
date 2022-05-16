@@ -16,6 +16,6 @@ export function unixTime(unixtime) {
 	minutes = minutes < 10 ? `0${minutes}` : minutes;
 	seconds = seconds < 10 ? `0${seconds}` : seconds;
 	
-	const time= `${hours}:${minutes}:${seconds} ${ampm}`
+	const time= `${hours}:${minutes}:${seconds} ${ampm}`;
 	return date + ", "+ time;
 }
